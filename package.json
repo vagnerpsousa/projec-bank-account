@@ -1,0 +1,14 @@
+{
+  "name": "project-bank-account",
+  "version": "1.0.0",
+  "description": "Nesse projeto, foi desenvolvido um back-end usando ORM com o pacote sequelize do npm, capaz de:",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "start": "nodemon src/api/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
