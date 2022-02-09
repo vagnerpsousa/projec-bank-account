@@ -21,11 +21,11 @@ module.exports = async (req, res, next) => {
   if (error) return next(error);
 
   const arrayName = fullName.split(' ');
-  
+
   if (arrayName.length < 2) {
     return next({
       statusCode: StatusCodes.NOT_FOUND,
-      message: 'Inform the full name'
+      message: 'Inform the full name',
     });
   }
 
@@ -36,9 +36,9 @@ module.exports = async (req, res, next) => {
   if (customerExists) {
     return next({
       statusCode: StatusCodes.NOT_FOUND,
-      message: 'cpf or email already registered'
+      message: 'cpf or email already registered',
     });
   }
 
-  next();
+  return next();
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const frisby = require('frisby');
 const shell = require('shelljs');
 
@@ -13,11 +14,13 @@ describe('3 - Sua aplicação deve ter o endpoint GET `/customer`', () => {
   it('Será validado que é possível listar todos os clientes', async () => {
     let token;
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'antonio_jose@email.com',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 200)
       .then((response) => {
         const { body } = response;

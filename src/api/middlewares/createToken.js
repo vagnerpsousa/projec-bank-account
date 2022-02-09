@@ -10,6 +10,7 @@ const jwtConfig = {
 
 module.exports = (customer) => {
   const { password, ...customerWhitoutPassword } = customer;
+
   const token = jwt.sign(customerWhitoutPassword, SECRET, jwtConfig);
 
   return token;

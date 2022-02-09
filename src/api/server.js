@@ -5,7 +5,7 @@ const rescue = require('express-rescue');
 const {
   customerController,
   transactionController,
-  loginController
+  loginController,
 } = require('./controllers');
 const { error } = require('./middlewares');
 

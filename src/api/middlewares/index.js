@@ -9,13 +9,13 @@ const validateToken = require('./validateToken');
 const validateLogin = require('./validateLogin');
 
 module.exports = {
-    error,
-    createToken,
-    validateCustomer,
-    validateTransactionToCreate,
-    validateTransactionToDelete,
-    doesCustomerExists,
-    doesTransactionExists,
-    validateToken,
-    validateLogin
+  error,
+  createToken,
+  validateCustomer,
+  validateTransactionToCreate,
+  validateTransactionToDelete,
+  doesCustomerExists,
+  doesTransactionExists,
+  validateToken,
+  validateLogin,
 };

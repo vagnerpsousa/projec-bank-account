@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('transactions', {
@@ -6,11 +5,11 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       value: {
         allowNull: false,
-        type: Sequelize.DECIMAL(6,2),
+        type: Sequelize.DECIMAL(6, 2),
       },
       transaction_type_id: {
         allowNull: false,
@@ -23,10 +22,10 @@ module.exports = {
       receiving_account_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
-      }
+      },
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('transactions');
-  }
+  },
 };

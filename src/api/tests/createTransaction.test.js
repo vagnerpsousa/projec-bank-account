@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const frisby = require('frisby');
 const shell = require('shelljs');
 
@@ -13,11 +14,13 @@ describe('5 - Sua aplicação deve ter o endpoint POST `/transaction`', () => {
   it('Será validado que é possível fazer uma transação com sucesso', async () => {
     let token;
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'antonio_jose@email.com',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
@@ -35,10 +38,10 @@ describe('5 - Sua aplicação deve ter o endpoint POST `/transaction`', () => {
         },
       })
       .post(`${url}/transaction`, {
-        cpfOrEmailIssuer: "12345678911",
-        cpfOrEmailReceiver: "12345678911",
-        transactionType: "depósito",
-        value: 1000
+        cpfOrEmailIssuer: '12345678911',
+        cpfOrEmailReceiver: '12345678911',
+        transactionType: 'depósito',
+        value: 1000,
       })
       .expect('status', 201)
       .then((response) => {
@@ -52,11 +55,13 @@ describe('5 - Sua aplicação deve ter o endpoint POST `/transaction`', () => {
   it('Será validado que não é possível fazer uma transação sem o campo `value`', async () => {
     let token;
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'antonio_jose@email.com',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
@@ -74,9 +79,9 @@ describe('5 - Sua aplicação deve ter o endpoint POST `/transaction`', () => {
         },
       })
       .post(`${url}/transaction`, {
-        cpfOrEmailIssuer: "12345678911",
-        cpfOrEmailReceiver: "12345678911",
-        transactionType: "depósito"
+        cpfOrEmailIssuer: '12345678911',
+        cpfOrEmailReceiver: '12345678911',
+        transactionType: 'depósito',
       })
       .expect('status', 400)
       .then((response) => {
@@ -88,11 +93,13 @@ describe('5 - Sua aplicação deve ter o endpoint POST `/transaction`', () => {
   it('Será validado que não é possível cadastrar um blogpost sem o campo `transactionType`', async () => {
     let token;
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'antonio_jose@email.com',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
@@ -110,9 +117,9 @@ describe('5 - Sua aplicação deve ter o endpoint POST `/transaction`', () => {
         },
       })
       .post(`${url}/transaction`, {
-        cpfOrEmailIssuer: "12345678911",
-        cpfOrEmailReceiver: "12345678911",
-        value: 1000
+        cpfOrEmailIssuer: '12345678911',
+        cpfOrEmailReceiver: '12345678911',
+        value: 1000,
       })
       .expect('status', 400)
       .then((response) => {
@@ -132,10 +139,10 @@ describe('5 - Sua aplicação deve ter o endpoint POST `/transaction`', () => {
         },
       })
       .post(`${url}/transaction`, {
-        cpfOrEmailIssuer: "12345678911",
-        cpfOrEmailReceiver: "12345678911",
-        transactionType: "depósito",
-        value: 1000
+        cpfOrEmailIssuer: '12345678911',
+        cpfOrEmailReceiver: '12345678911',
+        transactionType: 'depósito',
+        value: 1000,
       })
       .expect('status', 401)
       .then((response) => {

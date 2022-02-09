@@ -1,5 +1,6 @@
 const express = require('express');
 const { StatusCodes } = require('http-status-codes');
+
 const router = express.Router();
 const transactionService = require('../services/transactionService');
 const {
@@ -9,20 +10,22 @@ const {
   doesTransactionExists,
 } = require('../middlewares');
 
-
 router.post('/', validateToken, validateTransactionToCreate, async (req, res, next) => {
   try {
     const { issuing_account_id } = req;
     const { receiving_account_id } = req;
-    const { value , transactionType } = req.body;
+    const { value, transactionType } = req.body;
 
-    const transaction = await transactionService.create(issuing_account_id, receiving_account_id, value, transactionType);
+    const transaction = await transactionService.create(
+      issuing_account_id,
+      receiving_account_id,
+      value,
+      transactionType,
+    );
 
     res.status(StatusCodes.CREATED).json(transaction);
-
   } catch (error) {
-
-    next(error)
+    next(error);
   }
 });
 
@@ -37,19 +40,15 @@ router.get('/', validateToken, async (req, res, next) => {
   }
 
   return res.status(StatusCodes.OK).json(transactions);
-
 });
 
-router.get('/:id', validateToken, doesTransactionExists, async (req, res, _next) => {
-
+router.get('/:id', validateToken, doesTransactionExists, async (req, res) => {
   const transaction = await transactionService.getById(req.params.id);
 
   return res.status(StatusCodes.OK).json(transaction);
 });
 
-
-router.delete('/:id', validateToken, doesTransactionExists, validateTransactionToDelete, async (req, res, _next) => {
-
+router.delete('/:id', validateToken, doesTransactionExists, validateTransactionToDelete, async (req, res) => {
   await transactionService.deleteById(req.params.id, req.transactionData);
 
   return res.status(StatusCodes.NO_CONTENT).json({ message: 'Transaction was deleted' });

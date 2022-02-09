@@ -1,22 +1,26 @@
 module.exports = {
-  up: async (queryInterface, _Sequelize) => {
-    await queryInterface.bulkInsert('bank_accounts',
+  up: async (queryInterface) => {
+    await queryInterface.bulkInsert(
+      'bank_accounts',
       [{
         id: 1,
         customer_id: 1,
         account_type_id: 1,
-        balance: 1000
+        balance: 1000,
       },
       {
         id: 2,
         customer_id: 2,
         account_type_id: 1,
-        balance: 0
+        balance: 0,
       },
-      ], { timestamps: false });
+      ],
+
+      { timestamps: false },
+    );
   },
 
-  down: async (queryInterface, _Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.bulkDelete('bank_accounts', null, {});
   },
 };

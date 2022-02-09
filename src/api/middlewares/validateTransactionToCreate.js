@@ -10,7 +10,9 @@ const schema = Joi.object({
 });
 
 module.exports = async (req, _res, next) => {
-  const { cpfOrEmailIssuer, cpfOrEmailReceiver, transactionType, value } = req.body;
+  const {
+    cpfOrEmailIssuer, cpfOrEmailReceiver, transactionType, value,
+  } = req.body;
 
   const { error } = schema.validate(req.body);
   if (error) return next(error);
@@ -20,9 +22,9 @@ module.exports = async (req, _res, next) => {
   if (!issuer) {
     return next({
       statusCode: StatusCodes.NOT_FOUND,
-      message: 'Issuer does not exist'
+      message: 'Issuer does not exist',
     });
-  };
+  }
   req.issuing_account_id = issuer.dataValues.id;
 
   const receiver = await customerService.getByCpfOrEmail(cpfOrEmailReceiver);
@@ -30,9 +32,9 @@ module.exports = async (req, _res, next) => {
   if (!receiver) {
     return next({
       statusCode: StatusCodes.NOT_FOUND,
-      message: 'Receiver does not exist'
+      message: 'Receiver does not exist',
     });
-  };
+  }
   req.receiving_account_id = receiver.dataValues.id;
 
   if (transactionType === 'transferência') {
@@ -41,10 +43,10 @@ module.exports = async (req, _res, next) => {
     if (balanceIssuer < value) {
       return next({
         statusCode: StatusCodes.NOT_FOUND,
-        message: 'Insufficient balance for transfer'
+        message: 'Insufficient balance for transfer',
       });
-    };
-  };
+    }
+  }
 
-  next();
+  return next();
 };

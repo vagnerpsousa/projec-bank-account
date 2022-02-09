@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const frisby = require('frisby');
 const shell = require('shelljs');
 
@@ -13,11 +14,13 @@ describe('4 - Sua aplicação deve ter o endpoint DELETE `/customer/:id`', () =>
   it('Será validado que é possível excluir meu cliente com sucesso', async () => {
     let token;
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'antonio_jose@email.com',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 200)
       .then((response) => {
         const { body } = response;

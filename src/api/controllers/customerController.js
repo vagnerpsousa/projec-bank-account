@@ -1,21 +1,17 @@
 const express = require('express');
 const { StatusCodes } = require('http-status-codes');
+
 const router = express.Router();
 const customerService = require('../services/customerService');
 const { validateCustomer, doesCustomerExists, validateToken } = require('../middlewares');
 
-
 router.post('/', validateCustomer, async (req, res, next) => {
   try {
-
     const token = await customerService.create(req.body);
 
-    res.status(StatusCodes.CREATED).json({token});
-
+    res.status(StatusCodes.CREATED).json({ token });
   } catch (error) {
-
-    next(error)
-
+    next(error);
   }
 });
 
@@ -30,17 +26,15 @@ router.get('/', validateToken, async (req, res, next) => {
   }
 
   return res.status(StatusCodes.OK).json(customers);
-
 });
 
-router.get('/:id', validateToken, doesCustomerExists, async (req, res, _next) => {
-
+router.get('/:id', validateToken, doesCustomerExists, async (req, res) => {
   const customer = await customerService.getById(req.params.id);
 
   return res.status(StatusCodes.OK).json(customer);
 });
 
-router.put('/:id', validateToken, doesCustomerExists, validateCustomer, async (req, res, _next) => {
+router.put('/:id', validateToken, doesCustomerExists, validateCustomer, async (req, res) => {
   const { id } = req.params;
 
   const updatedCustomer = await customerService.updateById(id, req.body);
@@ -48,8 +42,7 @@ router.put('/:id', validateToken, doesCustomerExists, validateCustomer, async (r
   return res.status(StatusCodes.OK).json(updatedCustomer);
 });
 
-router.delete('/:id', validateToken, doesCustomerExists, async (req, res, _next) => {
-
+router.delete('/:id', validateToken, doesCustomerExists, async (req, res) => {
   await customerService.deleteById(req.params.id);
 
   return res.status(StatusCodes.NO_CONTENT).json({ message: 'Customer was deleted' });

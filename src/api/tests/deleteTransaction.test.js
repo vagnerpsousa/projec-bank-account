@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const frisby = require('frisby');
 const shell = require('shelljs');
 
@@ -13,11 +14,13 @@ describe('6 - Sua aplicação deve ter o endpoint DELETE `transaction/:id`', () 
   it('Será validado que é possível deletar uma transação com sucesso', async () => {
     let token;
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'antonio_jose@email.com',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
@@ -41,11 +44,13 @@ describe('6 - Sua aplicação deve ter o endpoint DELETE `transaction/:id`', () 
   it('Será validado que não é possível deletar uma transação inexistente', async () => {
     let token;
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'antonio_jose@email.com',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
@@ -87,5 +92,4 @@ describe('6 - Sua aplicação deve ter o endpoint DELETE `transaction/:id`', () 
         expect(json.message).toBe('Token not found');
       });
   });
-
 });

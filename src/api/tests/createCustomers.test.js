@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const frisby = require('frisby');
 const shell = require('shelljs');
 
@@ -11,14 +12,16 @@ describe('1 - Sua aplicação deve ter o endpoint POST `/customer`', () => {
 
   it('Será validado que é possível cadastrar um cliente com sucesso', async () => {
     await frisby
-      .post(`${url}/customer`,
+      .post(
+        `${url}/customer`,
         {
           fullName: 'Bruno Henrique',
           cpf: '12345678955',
           email: 'henrique_bruno@email.com',
           accountType: 'poupança',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 201)
       .then((response) => {
         const { json } = response;
@@ -28,14 +31,16 @@ describe('1 - Sua aplicação deve ter o endpoint POST `/customer`', () => {
 
   it('Será validado que não é possível cadastrar cliente com o campo `fullName` menor que 3 caracteres', async () => {
     await frisby
-      .post(`${url}/customer`,
+      .post(
+        `${url}/customer`,
         {
           fullName: 'Jo',
           cpf: '12345678911',
           email: 'antonio_jose@email.com',
           accountType: 'poupança',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 400)
       .then((response) => {
         const { json } = response;
@@ -45,14 +50,16 @@ describe('1 - Sua aplicação deve ter o endpoint POST `/customer`', () => {
 
   it('Será validado que não é possível cadastrar cliente com o campo `email` com formato invalido', async () => {
     await frisby
-      .post(`${url}/customer`,
+      .post(
+        `${url}/customer`,
         {
           fullName: 'José Antonio',
           cpf: '12345678911',
           email: 'antonio',
           accountType: 'poupança',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 400)
       .then((response) => {
         const { json } = response;
@@ -62,13 +69,15 @@ describe('1 - Sua aplicação deve ter o endpoint POST `/customer`', () => {
 
   it('Será validado que o campo `email` é obrigatório', async () => {
     await frisby
-      .post(`${url}/customer`,
+      .post(
+        `${url}/customer`,
         {
           fullName: 'José Antonio',
           cpf: '12345678911',
           accountType: 'poupança',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 400)
       .then((response) => {
         const { json } = response;
@@ -78,14 +87,16 @@ describe('1 - Sua aplicação deve ter o endpoint POST `/customer`', () => {
 
   it('Será validado que não é possível cadastrar cliente com o campo `password` menor que 6 caracteres', async () => {
     await frisby
-      .post(`${url}/customer`,
+      .post(
+        `${url}/customer`,
         {
           fullName: 'José Antonio',
           cpf: '12345678911',
           email: 'antonio_jose@email.com',
           accountType: 'poupança',
           password: '12345',
-        })
+        },
+      )
       .expect('status', 400)
       .then((response) => {
         const { json } = response;
@@ -95,13 +106,15 @@ describe('1 - Sua aplicação deve ter o endpoint POST `/customer`', () => {
 
   it('Será validado que o campo `password` é obrigatório', async () => {
     await frisby
-      .post(`${url}/customer`,
+      .post(
+        `${url}/customer`,
         {
           fullName: 'José Antonio',
           cpf: '12345678911',
           email: 'antonio_jose@email.com',
           accountType: 'poupança',
-        })
+        },
+      )
       .expect('status', 400)
       .then((response) => {
         const { json } = response;
@@ -111,25 +124,29 @@ describe('1 - Sua aplicação deve ter o endpoint POST `/customer`', () => {
 
   it('Validar que não é possível cadastrar um cliente com email ou cpf já existente', async () => {
     await frisby
-      .post(`${url}/customer`,
+      .post(
+        `${url}/customer`,
         {
           fullName: 'José Maria',
           cpf: '12345678955',
           email: 'maria_jose@email.com',
           accountType: 'poupança',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 201);
 
     await frisby
-      .post(`${url}/customer`,
+      .post(
+        `${url}/customer`,
         {
           fullName: 'José Maria',
           cpf: '12345678955',
           email: 'maria_jose@email.com',
           accountType: 'poupança',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 404)
       .then((response) => {
         const { json } = response;

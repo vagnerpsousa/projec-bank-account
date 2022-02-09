@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const frisby = require('frisby');
 const shell = require('shelljs');
 
@@ -12,11 +13,13 @@ describe('2 - Sua aplicação deve ter o endpoint POST `/login`', () => {
 
   it('Será validado que é possível fazer login com sucesso', async () => {
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'antonio_jose@email.com',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
@@ -27,10 +30,12 @@ describe('2 - Sua aplicação deve ter o endpoint POST `/login`', () => {
 
   it('Será validado que não é possível fazer login sem o campo `email`', async () => {
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           password: '123456',
-        })
+        },
+      )
       .expect('status', 400)
       .then((response) => {
         const { body } = response;
@@ -41,10 +46,12 @@ describe('2 - Sua aplicação deve ter o endpoint POST `/login`', () => {
 
   it('Será validado que não é possível fazer login sem o campo `password`', async () => {
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'antonio_jose@email.com',
-        })
+        },
+      )
       .expect('status', 400)
       .then((response) => {
         const { body } = response;
@@ -55,11 +62,13 @@ describe('2 - Sua aplicação deve ter o endpoint POST `/login`', () => {
 
   it('Será validado que não é possível fazer login com o campo `email` em branco', async () => {
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: '',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 400)
       .then((response) => {
         const { body } = response;
@@ -70,11 +79,13 @@ describe('2 - Sua aplicação deve ter o endpoint POST `/login`', () => {
 
   it('Será validado que não é possível fazer login com o campo `password` em branco', async () => {
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'antonio_jose@email.com',
           password: '',
-        })
+        },
+      )
       .expect('status', 400)
       .then((response) => {
         const { body } = response;
@@ -85,11 +96,13 @@ describe('2 - Sua aplicação deve ter o endpoint POST `/login`', () => {
 
   it('Será validado que não é possível fazer login com email ou usuário que não existe', async () => {
     await frisby
-      .post(`${url}/login`,
+      .post(
+        `${url}/login`,
         {
           email: 'pedro_silva@gmail.com',
           password: '123456',
-        })
+        },
+      )
       .expect('status', 404)
       .then((response) => {
         const { body } = response;
