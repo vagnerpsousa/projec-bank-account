@@ -7,10 +7,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      account_type: {
+      accountType: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
+        field: 'account_type',
       },
     });
   },

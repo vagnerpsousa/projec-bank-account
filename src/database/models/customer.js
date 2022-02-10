@@ -2,10 +2,24 @@ module.exports = (sequelize, DataTypes) => {
   const Customer = sequelize.define(
     'Customer',
     {
-      full_name: { type: DataTypes.STRING, allowNull: false },
-      cpf: { type: DataTypes.STRING, allowNull: false, unique: true },
-      email: { type: DataTypes.STRING, allowNull: false },
-      password: { type: DataTypes.STRING, allowNull: false },
+      fullName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        field: 'full_name',
+      },
+      cpf: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       timestamps: false,
@@ -14,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Customer.associate = (models) => {
-    Customer.hasOne(models.BankAccount, { foreignKey: 'customer_id', as: 'customers' });
+    Customer.hasOne(models.BankAccount, { foreignKey: 'customerId', as: 'bankAccounts' });
   };
 
   return Customer;

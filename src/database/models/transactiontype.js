@@ -2,7 +2,12 @@ module.exports = (sequelize, DataTypes) => {
   const TransactionType = sequelize.define(
     'TransactionType',
     {
-      type_name: { type: DataTypes.STRING, allowNull: false, unique: true },
+      typeName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        field: 'type_name',
+      },
     },
     {
       timestamps: false,

@@ -1,25 +1,23 @@
-/* eslint-disable camelcase */
 const { Op } = require('sequelize');
 const { Customer, AccountType, BankAccount } = require('../../database/models');
 const createToken = require('../middlewares/createToken');
 
 const create = async (body) => {
   const {
-    // eslint-disable-next-line camelcase
-    fullName: full_name,
+    fullName,
     cpf,
     email,
     accountType,
     password,
   } = body;
   const balance = 0;
-  const accountTypeData = await AccountType.findOne({ where: { account_type: accountType } });
-  const account_type_id = accountTypeData.dataValues.id;
+  const accountTypeData = await AccountType.findOne({ where: { accountType } });
+  const accountTypeId = accountTypeData.dataValues.id;
   const newCustomer = await Customer.create({
-    full_name, cpf, email, password,
+    fullName, cpf, email, password,
   });
-  const customer_id = newCustomer.id;
-  await BankAccount.create({ customer_id, account_type_id, balance });
+  const customerId = newCustomer.id;
+  await BankAccount.create({ customerId, accountTypeId, balance });
   const token = createToken(newCustomer);
   return token;
 };
@@ -42,15 +40,15 @@ const getByCpfOrEmail = async (cpfOrEmail) => {
 
 const updateById = async (id, body) => {
   const {
-    fullName: full_name,
+    fullName,
     cpf,
     email,
     accountType,
   } = body;
   const accountTypeData = await AccountType.findOne({ where: { account_type: accountType } });
-  const account_type_id = accountTypeData.dataValues.id;
-  const updatedCustomer = await Customer.update({ full_name, cpf, email }, { where: { id } });
-  await BankAccount.update({ account_type_id }, { where: { customer_id: id } });
+  const accountTypeId = accountTypeData.dataValues.id;
+  const updatedCustomer = await Customer.update({ fullName, cpf, email }, { where: { id } });
+  await BankAccount.update({ accountTypeId }, { where: { customer_id: id } });
 
   return updatedCustomer;
 };
@@ -64,7 +62,7 @@ const deleteById = async (id) => {
 const getAll = async () => {
   const customers = await BankAccount.findAll({
     include: [
-      { model: Customer, as: 'customers' },
+      { model: Customer, as: 'customer' },
       { model: AccountType, as: 'account_type' },
     ],
   });
@@ -79,7 +77,7 @@ const getById = async (id) => {
     (id),
     {
       include: [
-        { model: Customer, as: 'customers' },
+        { model: Customer, as: 'customer' },
         { model: AccountType, as: 'account_type' },
       ],
     },
@@ -88,8 +86,8 @@ const getById = async (id) => {
   return customerData;
 };
 
-const getBankDetails = async (customer_id) => {
-  const bankDetails = await BankAccount.findOne({ where: { customer_id } });
+const getBankDetails = async (customerId) => {
+  const bankDetails = await BankAccount.findOne({ where: { customerId } });
 
   return bankDetails;
 };

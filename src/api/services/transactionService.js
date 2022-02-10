@@ -1,25 +1,24 @@
-/* eslint-disable camelcase */
 const { BankAccount, Transaction, TransactionType } = require('../../database/models');
 
-const create = async (issuing_account_id, receiving_account_id, value, type_name) => {
-  const transactionTypeData = await TransactionType.findOne({ where: { type_name } });
+const create = async (issuingAccountId, receivingAccountId, value, typeName) => {
+  const transactionTypeData = await TransactionType.findOne({ where: { typeName } });
 
-  const transaction_type_id = transactionTypeData.dataValues.id;
+  const transactionTypeId = transactionTypeData.dataValues.id;
 
   await BankAccount.increment(
     { balance: value },
-    { where: { customer_id: receiving_account_id } },
+    { where: { customer_id: receivingAccountId } },
   );
 
-  if (type_name === 'transferência') {
+  if (typeName === 'transferência') {
     await BankAccount.decrement(
       { balance: value },
-      { where: { customer_id: issuing_account_id } },
+      { where: { customer_id: issuingAccountId } },
     );
   }
 
   const newTransaction = await Transaction.create({
-    value, transaction_type_id, issuing_account_id, receiving_account_id,
+    value, transactionTypeId, issuingAccountId, receivingAccountId,
   });
 
   return newTransaction;
@@ -27,18 +26,18 @@ const create = async (issuing_account_id, receiving_account_id, value, type_name
 
 const deleteById = async (id, transactionData) => {
   const {
-    transaction_type_id, issuing_account_id, receiving_account_id, value,
+    transactionTypeId, issuingAccountId, receivingAccountId, value,
   } = transactionData;
 
   await BankAccount.decrement(
     { balance: value },
-    { where: { customer_id: receiving_account_id } },
+    { where: { customer_id: receivingAccountId } },
   );
 
-  if (transaction_type_id === 2) {
+  if (transactionTypeId === 2) {
     await BankAccount.increment(
       { balance: value },
-      { where: { customer_id: issuing_account_id } },
+      { where: { customer_id: issuingAccountId } },
     );
   }
 

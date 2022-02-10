@@ -12,13 +12,13 @@ const {
 
 router.post('/', validateToken, validateTransactionToCreate, async (req, res, next) => {
   try {
-    const { issuing_account_id } = req;
-    const { receiving_account_id } = req;
+    const { issuingAccountId } = req;
+    const { receivingAccountId } = req;
     const { value, transactionType } = req.body;
 
     const transaction = await transactionService.create(
-      issuing_account_id,
-      receiving_account_id,
+      issuingAccountId,
+      receivingAccountId,
       value,
       transactionType,
     );

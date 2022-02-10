@@ -7,13 +7,27 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      customer_id: {
+      customerId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        field: 'customer_id',
+        references: {
+          model: 'customers',
+          key: 'id',
+        },
       },
-      account_type_id: {
+      accountTypeId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        field: 'account_type_id',
+        references: {
+          model: 'account_types',
+          key: 'id',
+        },
       },
       balance: {
         allowNull: false,

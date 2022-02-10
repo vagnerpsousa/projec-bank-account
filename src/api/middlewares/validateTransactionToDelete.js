@@ -5,8 +5,7 @@ module.exports = async (req, _res, next) => {
   const { id } = req.params;
   const transactionData = await transactionService.getById(id);
   const { value } = transactionData;
-  const receivingAccountId = transactionData.receiving_account_id;
-
+  const { receivingAccountId } = transactionData;
   req.transactionData = transactionData;
 
   const receiverData = await customerService.getBankDetails(receivingAccountId);

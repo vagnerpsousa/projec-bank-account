@@ -11,17 +11,20 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DECIMAL(6, 2),
       },
-      transaction_type_id: {
+      transactionTypeId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        field: 'transaction_type_id',
       },
-      issuing_account_id: {
+      issuingAccountId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        field: 'issuing_account_id',
       },
-      receiving_account_id: {
+      receivingAccountId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        field: 'receiving_account_id',
       },
     });
   },

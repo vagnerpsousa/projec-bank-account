@@ -25,7 +25,7 @@ module.exports = async (req, _res, next) => {
       message: 'Issuer does not exist',
     });
   }
-  req.issuing_account_id = issuer.dataValues.id;
+  req.issuingAccountId = issuer.dataValues.id;
 
   const receiver = await customerService.getByCpfOrEmail(cpfOrEmailReceiver);
 
@@ -35,7 +35,7 @@ module.exports = async (req, _res, next) => {
       message: 'Receiver does not exist',
     });
   }
-  req.receiving_account_id = receiver.dataValues.id;
+  req.receivingAccountId = receiver.dataValues.id;
 
   if (transactionType === 'transferência') {
     const issuerData = await customerService.getBankDetails(issuer.dataValues.id);

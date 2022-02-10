@@ -49,12 +49,48 @@ npm test
 ### endpoints:
 
 -  POST `/customer`
+- O corpo da requisição deverá ter o seguinte formato:
+```json
+  {
+    "fullName": "Ricardo Sousa",
+    "cpf": "12345678999",
+    "email": "sousa_ricardo@email.com",
+    "accountType": "corrente",
+    "password": "123456"
+}
+  ```
 -  POST `/login`
+- O corpo da requisição deverá ter o seguinte formato:
+```json
+  {
+    "email": "sousa_ricardo@email.com",
+    "password": "123456"
+}
+  ```
 -  GET `/customer`
 -  GET `/customer/id`
 -  PUT `/customer/id`
+- O corpo da requisição deverá ter o seguinte formato:
+```json
+  {
+    "fullName": "Vagner Sousa",
+    "cpf": "12345678555",
+    "email": "sousa__vagner@email.com",
+    "accountType": "corrente",
+    "password": "123456"
+}
+  ```
 -  DELETE `/customer/id`
 -  POST `/transaction`
+- O corpo da requisição deverá ter o seguinte formato:
+```json
+  {
+  "cpfOrEmailIssuer":"12345678922",
+  "cpfOrEmailReceiver": "12345678922",
+  "transactionType": "depósito",
+  "value": 1000
+}
+  ```
 -  GET `/transaction`
 -  GET `/transaction/id`
 -  DELETE `/transaction/id`

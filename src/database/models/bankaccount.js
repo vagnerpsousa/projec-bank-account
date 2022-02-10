@@ -2,9 +2,22 @@ module.exports = (sequelize, DataTypes) => {
   const BankAccount = sequelize.define(
     'BankAccount',
     {
-      customer_id: { type: DataTypes.INTEGER, foreignKey: true, allowNull: false },
-      account_type_id: { type: DataTypes.INTEGER, foreignKey: true, allowNull: false },
-      balance: { type: DataTypes.DECIMAL(4, 2), allowNull: false },
+      customerId: {
+        type: DataTypes.INTEGER,
+        foreignKey: true,
+        allowNull: false,
+        field: 'customer_id',
+      },
+      accountTypeId: {
+        type: DataTypes.INTEGER,
+        foreignKey: true,
+        allowNull: false,
+        field: 'account_type_id',
+      },
+      balance: {
+        type: DataTypes.DECIMAL(4, 2),
+        allowNull: false,
+      },
     },
     {
       timestamps: false,
@@ -13,8 +26,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   BankAccount.associate = (models) => {
-    BankAccount.belongsTo(models.Customer, { foreignKey: 'id', as: 'customers' });
-    BankAccount.belongsTo(models.AccountType, { foreignKey: 'id', as: 'account_type' });
+    BankAccount.belongsTo(models.Customer, { foreignKey: 'customerId', as: 'customer' });
+    BankAccount.belongsTo(models.AccountType, { foreignKey: 'accountTypeId', as: 'account_type' });
   };
 
   return BankAccount;

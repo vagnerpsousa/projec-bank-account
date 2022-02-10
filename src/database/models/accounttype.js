@@ -2,7 +2,12 @@ module.exports = (sequelize, DataTypes) => {
   const AccountType = sequelize.define(
     'AccountType',
     {
-      account_type: { type: DataTypes.STRING, allowNull: false, unique: true },
+      accountType: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        field: 'account_type',
+      },
     },
     {
       timestamps: false,
@@ -11,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   AccountType.associate = (models) => {
-    AccountType.hasMany(models.BankAccount, { foreignKey: 'account_type_id', as: 'account_types' });
+    AccountType.hasMany(models.BankAccount, { foreignKey: 'accountTypeId', as: 'bankAccounts' });
   };
 
   return AccountType;

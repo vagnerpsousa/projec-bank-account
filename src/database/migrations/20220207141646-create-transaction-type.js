@@ -7,10 +7,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      type_name: {
+      typeName: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
+        field: 'type_name',
       },
     });
   },

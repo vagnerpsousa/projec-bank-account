@@ -2,8 +2,28 @@ module.exports = (sequelize, DataTypes) => {
   const Transaction = sequelize.define(
     'Transaction',
     {
-      value: { type: DataTypes.DECIMAL(6, 2), allowNull: false },
-      transaction_type_id: { type: DataTypes.INTEGER, foreignKey: true, allowNull: false },
+      issuingAccountId: {
+        type: DataTypes.INTEGER,
+        foreignKey: true,
+        allowNull: false,
+        field: 'issuing_account_id',
+      },
+      receivingAccountId: {
+        type: DataTypes.INTEGER,
+        foreignKey: true,
+        allowNull: false,
+        field: 'receiving_account_id',
+      },
+      value: {
+        type: DataTypes.DECIMAL(6, 2),
+        allowNull: false,
+      },
+      transactionTypeId: {
+        type: DataTypes.INTEGER,
+        foreignKey: true,
+        allowNull: false,
+        field: 'transaction_type_id',
+      },
     },
     {
       timestamps: false,
@@ -15,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     models.BankAccount.belongsToMany(models.BankAccount, {
       as: 'BankAccounts',
       through: Transaction,
-      foreignKey: 'issuing_account_id',
-      otherKey: 'receiving_account_id',
+      foreignKey: 'issuingAccountId',
+      otherKey: 'receivingAccountId',
     });
 
     models.BankAccount.belongsToMany(
@@ -24,8 +44,8 @@ module.exports = (sequelize, DataTypes) => {
       {
         as: 'bank_account',
         through: Transaction,
-        foreignKey: 'receiving_account_id',
-        otherKey: 'issuing_account_id',
+        foreignKey: 'receivingAccountId',
+        otherKey: 'issuingAccountId',
       },
       { timestamps: false },
     );
