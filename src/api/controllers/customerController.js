@@ -29,7 +29,7 @@ router.get('/', validateToken, async (req, res, next) => {
 });
 
 router.get('/:id', validateToken, doesCustomerExists, async (req, res) => {
-  const customer = await customerService.getById(req.params.id);
+  const customer = await customerService.getById(req.params.id, req.query.includesTransactions);
 
   return res.status(StatusCodes.OK).json(customer);
 });

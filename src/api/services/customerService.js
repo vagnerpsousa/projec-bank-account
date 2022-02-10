@@ -1,5 +1,7 @@
 const { Op } = require('sequelize');
-const { Customer, AccountType, BankAccount } = require('../../database/models');
+const {
+  Customer, AccountType, BankAccount, Transaction,
+} = require('../../database/models');
 const createToken = require('../middlewares/createToken');
 
 const create = async (body) => {
@@ -72,7 +74,7 @@ const getAll = async () => {
   return customers;
 };
 
-const getById = async (id) => {
+const getById = async (id, includeTransactions) => {
   const customerData = await BankAccount.findByPk(
     (id),
     {
@@ -82,8 +84,11 @@ const getById = async (id) => {
       ],
     },
   );
-
-  return customerData;
+  let transactions = null;
+  if (includeTransactions === 'true') {
+    transactions = await Transaction.findAll({ where: { issuingAccountId: id } });
+  }
+  return [customerData, transactions];
 };
 
 const getBankDetails = async (customerId) => {

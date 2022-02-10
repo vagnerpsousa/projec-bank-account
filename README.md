@@ -68,7 +68,7 @@ npm test
 }
   ```
 -  GET `/customer`
--  GET `/customer/id`
+-  GET `/customer/id?includesTransactions=true`
 -  PUT `/customer/id`
 - O corpo da requisição deverá ter o seguinte formato:
 ```json
