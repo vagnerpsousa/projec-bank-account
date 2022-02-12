@@ -47,8 +47,8 @@ describe('5 - Sua aplicação deve ter o endpoint POST `/transaction`', () => {
       .then((response) => {
         const { json } = response;
         expect(json.value).toBe(1000);
-        expect(json.transaction_type_id).toBe(1);
-        expect(json.receiving_account_id).toBe(1);
+        expect(json.transactionTypeId).toBe(1);
+        expect(json.receivingAccountId).toBe(1);
       });
   });
 

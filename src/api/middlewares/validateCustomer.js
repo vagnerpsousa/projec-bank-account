@@ -29,15 +29,14 @@ module.exports = async (req, res, next) => {
     });
   }
 
-  let customerExists = await customerService.getByCpfOrEmail(cpf);
-
-  customerExists = await customerService.getByCpfOrEmail(email);
-
+  const customerExists = await customerService.getByCpfOrEmail(cpf, email);
   if (customerExists) {
-    return next({
-      statusCode: StatusCodes.NOT_FOUND,
-      message: 'cpf or email already registered',
-    });
+    if ((customerExists.id).toString() !== req.params.id) {
+      return next({
+        statusCode: StatusCodes.NOT_FOUND,
+        message: 'cpf or email already registered',
+      });
+    }
   }
 
   return next();

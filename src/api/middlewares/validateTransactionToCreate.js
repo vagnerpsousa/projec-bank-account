@@ -17,7 +17,7 @@ module.exports = async (req, _res, next) => {
   const { error } = schema.validate(req.body);
   if (error) return next(error);
 
-  const issuer = await customerService.getByCpfOrEmail(cpfOrEmailIssuer);
+  const issuer = await customerService.getByCpfOrEmail(cpfOrEmailIssuer, cpfOrEmailIssuer);
 
   if (!issuer) {
     return next({
@@ -27,7 +27,7 @@ module.exports = async (req, _res, next) => {
   }
   req.issuingAccountId = issuer.dataValues.id;
 
-  const receiver = await customerService.getByCpfOrEmail(cpfOrEmailReceiver);
+  const receiver = await customerService.getByCpfOrEmail(cpfOrEmailReceiver, cpfOrEmailReceiver);
 
   if (!receiver) {
     return next({

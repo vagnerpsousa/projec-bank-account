@@ -1,27 +1,50 @@
 const { Op } = require('sequelize');
+const Sequelize = require('sequelize');
+const config = require('../../database/config/config');
+
+const sequelize = new Sequelize(config.development);
+
 const {
   Customer, AccountType, BankAccount, Transaction,
 } = require('../../database/models');
 const createToken = require('../middlewares/createToken');
 
-const create = async (body) => {
-  const {
-    fullName,
-    cpf,
-    email,
-    accountType,
-    password,
-  } = body;
-  const balance = 0;
+const getAccountTypeByName = async (accountType) => {
   const accountTypeData = await AccountType.findOne({ where: { accountType } });
-  const accountTypeId = accountTypeData.dataValues.id;
-  const newCustomer = await Customer.create({
-    fullName, cpf, email, password,
-  });
-  const customerId = newCustomer.id;
-  await BankAccount.create({ customerId, accountTypeId, balance });
-  const token = createToken(newCustomer);
-  return token;
+  return accountTypeData.dataValues.id;
+};
+
+const create = async (body) => {
+  const t = await sequelize.transaction();
+  try {
+    const {
+      fullName, cpf, email, accountType, password,
+    } = body;
+
+    const accountTypeId = await getAccountTypeByName(accountType);
+
+    const newCustomer = await Customer.create(
+      {
+        fullName, cpf, email, password,
+      },
+      { transaction: t },
+    );
+
+    const customerId = newCustomer.id;
+    await BankAccount.create(
+      { customerId, accountTypeId, balance: 0 },
+      { transaction: t },
+    );
+
+    await t.commit();
+
+    const token = createToken(newCustomer);
+
+    return token;
+  } catch (error) {
+    await t.rollback();
+    return null;
+  }
 };
 
 const login = async ({ email, password }) => {
@@ -32,33 +55,64 @@ const login = async ({ email, password }) => {
   return token;
 };
 
-const getByCpfOrEmail = async (cpfOrEmail) => {
+const getByCpfOrEmail = async (cpf, email) => {
   const customerData = await Customer.findOne(
-    { where: { [Op.or]: [{ cpf: cpfOrEmail }, { email: cpfOrEmail }] } },
+    { where: { [Op.or]: [{ cpf }, { email }] } },
   );
 
   return customerData;
 };
 
 const updateById = async (id, body) => {
-  const {
-    fullName,
-    cpf,
-    email,
-    accountType,
-  } = body;
-  const accountTypeData = await AccountType.findOne({ where: { account_type: accountType } });
-  const accountTypeId = accountTypeData.dataValues.id;
-  const updatedCustomer = await Customer.update({ fullName, cpf, email }, { where: { id } });
-  await BankAccount.update({ accountTypeId }, { where: { customer_id: id } });
+  const t = await sequelize.transaction();
+  try {
+    const {
+      fullName, cpf, email, accountType,
+    } = body;
+    const accountTypeData = await AccountType.findOne(
+      { where: { account_type: accountType } },
+    );
+    const accountTypeId = accountTypeData.dataValues.id;
+    const updatedCustomer = await Customer.update(
+      { fullName, cpf, email },
+      { where: { id } },
+      { transaction: t },
+    );
+    await BankAccount.update(
+      { accountTypeId },
+      { where: { customer_id: id } },
+      { transaction: t },
+    );
 
-  return updatedCustomer;
+    await t.commit();
+
+    return updatedCustomer;
+  } catch (error) {
+    await t.rollback();
+    return null;
+  }
 };
 
 const deleteById = async (id) => {
-  await BankAccount.destroy({ where: { customer_id: id } });
+  const t = await sequelize.transaction();
+  try {
+    await BankAccount.destroy(
+      { where: { customer_id: id } },
+      { transaction: t },
+    );
 
-  await Customer.destroy({ where: { id } });
+    const deletedCustomer = await Customer.destroy(
+      { where: { id } },
+      { transaction: t },
+    );
+
+    await t.commit();
+
+    return deletedCustomer;
+  } catch (error) {
+    await t.rollback();
+    return null;
+  }
 };
 
 const getAll = async () => {

@@ -43,12 +43,12 @@ describe('3 - Sua aplicação deve ter o endpoint GET `/customer`', () => {
         const { json } = responseSales;
         const firstUser = json[0];
         const secondUser = json[1];
-        expect(firstUser.customers.full_name).toBe('José Antônio');
-        expect(firstUser.customers.email).toBe('antonio_jose@email.com');
-        expect(firstUser.customers.cpf).toBe('12345678911');
-        expect(secondUser.customers.full_name).toBe('Maria Jose');
-        expect(secondUser.customers.email).toBe('jose_maria@email.com');
-        expect(secondUser.customers.cpf).toBe('12345678922');
+        expect(firstUser.customer.fullName).toBe('José Antônio');
+        expect(firstUser.customer.email).toBe('antonio_jose@email.com');
+        expect(firstUser.customer.cpf).toBe('12345678911');
+        expect(secondUser.customer.fullName).toBe('Maria Jose');
+        expect(secondUser.customer.email).toBe('jose_maria@email.com');
+        expect(secondUser.customer.cpf).toBe('12345678922');
       });
   });
 
