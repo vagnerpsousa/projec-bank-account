@@ -6,8 +6,8 @@ const {
   customerController,
   transactionController,
   loginController,
-} = require('./controllers');
-const { error } = require('./middlewares');
+} = require('./src/api/controllers');
+const { error } = require('./src/api/middlewares');
 
 const app = express();
 
